@@ -1,9 +1,17 @@
 class World {
   constructor(components) {
     this.entities = [];
+    this.systems = [];
     this.Entity = this.createEntityClass_();
     this.Components = components;
     this.System = this.createSystemClass_();
+  }
+
+  update(dt) {
+    const len = this.systems.length;
+    for (let i = 0; i < len; i++) {
+      this.systems[i].update(dt);
+    }
   }
 
   createEntityClass_() {
@@ -51,7 +59,7 @@ class World {
   }
 
   createSystemClass_() {
-    const { entities } = this;
+    const { entities, systems } = this;
     const forEach = (componentConstructors, fn) => {
       const len = entities.length;
       for (let i = 0; i < len; i++) {
@@ -71,6 +79,7 @@ class World {
 
     class System {
       constructor(update) {
+        systems.push(this);
         this.update_ = update;
       }
 
