@@ -12,33 +12,57 @@ class World {
     for (let i = 0; i < len; i++) {
       this.systems[i].update(dt);
     }
+    return this;
+  }
+
+  addEntity(entity) {
+    this.entities.push(entity);
+    return this;
+  }
+
+  addSystem(system) {
+    this.systems.push(system);
+    return this;
+  }
+
+  removeEntity(entity) {
+    const i = this.entities.indexOf(entity);
+    if (i > -1) {
+      this.entities.splice(i, 1);
+    }
+    return this;
+  }
+
+  removeSystem(system) {
+    const i = this.systems.indexOf(system);
+    if (i > -1) {
+      this.systems.splice(i, 1);
+    }
+    return this;
   }
 
   createEntityClass_() {
     const { entities } = this;
 
     class Entity {
-      constructor() {
-        entities.push(this);
-      }
-
-      add(component) {
+      addComponent(component) {
         this[component.constructor.name.toLowerCase()] = component;
         return this;
       }
 
-      get(componentConstructor) {
+      getComponent(componentConstructor) {
         return this[componentConstructor.name.toLowerCase()];
       }
 
-      remove(componentConstructor) {
-        if (componentConstructor) {
-          this[componentConstructor.name.toLowerCase()] = null;
-        } else {
-          const i = entities.indexOf(this);
-          if (i > -1) {
-            entities.splice(i, 1);
-          }
+      removeComponent(componentConstructor) {
+        this[componentConstructor.name.toLowerCase()] = null;
+        return this;
+      }
+
+      removeSelf() {
+        const i = entities.indexOf(this);
+        if (i > -1) {
+          entities.splice(i, 1);
         }
         return this;
       }
@@ -59,7 +83,7 @@ class World {
   }
 
   createSystemClass_() {
-    const { entities, systems } = this;
+    const { entities, } = this;
     const forEach = (componentConstructors, fn) => {
       const len = entities.length;
       for (let i = 0; i < len; i++) {
@@ -79,7 +103,6 @@ class World {
 
     class System {
       constructor(update) {
-        systems.push(this);
         this.update_ = update;
       }
 

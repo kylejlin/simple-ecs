@@ -45,23 +45,25 @@ import * as components from './components';
 
 const world = new World(components);
 const { Entity, Components, System } = world;
+const { Hero, Position, Velocity } = Components;
 
-// Calling new Entity() implicitly adds the entity to the world.
 const bob = new Entity();
-bob.add(new Components.Hero());
-bob.add(new Components.Position(0, 0, 0));
-bob.add(new Components.Velocity(0, 0, 0));
+world.addEntity(bob);
+bob.addComponent(new Hero());
+bob.addComponent(new Position(0, 0, 0));
+bob.addComponent(new Velocity(0, 0, 0));
 
-// Calling new System() implicitly adds the system to the world.
 const motion = new System((dt, forEach) => {
-  forEach([Components.Position, Components.Velocity], (entity) => {
-    const position = entity.get(Components.Position);
-    const velocity = entity.get(Components.Velocity);
+  forEach([Position, Velocity], (entity) => {
+    const position = entity.getComponent(Position);
+    const velocity = entity.getComponent(Velocity);
+    
     position.x += velocity.x;
     position.y += velocity.y;
     position.z += velocity.z;
   });
 });
+world.addSystem(motion);
 
 let then = Date.now();
 const gameLoop = () => {
