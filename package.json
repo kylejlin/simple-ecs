@@ -1,6 +1,6 @@
 {
   "name": "@kylejlin/simple-ecs",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A simple entity-component-system setup.",
   "main": "src/index.js",
   "scripts": {

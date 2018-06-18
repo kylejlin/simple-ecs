@@ -24,7 +24,7 @@ class Entity {
   hasAll(componentConstructors) {
     const len = componentConstructors.length;
     for (let i = 0; i < len; i++) {
-      const component = this.get(componentConstructors[i]);
+      const component = this.getComponent(componentConstructors[i]);
       if (typeof component === 'undefined' || component === null) {
         return false;
       }
