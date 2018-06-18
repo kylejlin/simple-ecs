@@ -82,47 +82,50 @@ Note: this library is not transpiled.
 If you plan to support older browsers, you'll have to set up Babel (or whatever transpiler choose) yourself.
 
 ## Docs
+Since most of the methods are self-explanatory, I decided to provide my docs in the form of stubbed-out Javascript with occasional comments.
+```javascript
+class World {
+  constructor() {}
 
-### `class World`
-#### `World::constructor(components) -> this`
-#### `World::update(data) -> this`
-Calls `update()` on each of its systems.
+  update(data) {}
 
-`data` is a optional argument.
-If you provide it a value, it will get passed down to each of this world's systems.
-Most people like to pass in the milliseconds since the last update, but you can use this however you'd like.
-#### `World::addEntity(entity) -> this`
-Adds `entity` to `this.entities`.
-#### `World::addSystem(system) -> this`
-Adds `system` to `this.systems`.
-#### `World::removeEntity(entity) -> this`
-Remove `entity` from `this.entities`.
-#### `World::removeSystem(system) -> this`
-Remove `system` from `this.systems`.
-#### `World::entities`
-The array of all this world's entities.
-#### `World::systems`
-The array of all this world's systems.
-#### `World::Entity`
-A class that creates an entity scoped to this world.
-#### `World::System`
-A class that creates a system scoped to this world.
-#### `World::Components`
-A dictionary of all components used by this world.
+  addEntity(entity) {}
 
-### `class World::Entity`
-#### `Entity::addComponent(component) -> this`
-#### `Entity::removeComponent(component) -> this`
-#### `Entity::getComponent(componentConstructor) -> Component`
-#### `Entity::removeSelf() -> this`
-Removes itself from its world.
-#### `Entity::has_all(componentConstructors) -> boolean`
-Returns whether it has all of the components.
+  addSystem(system) {}
 
-`componentConstructors` is the array of component constructors to check for.
+  removeEntity(entity) {}
 
-### `class World::System`
-#### `System::constructor() -> this`
-#### `System::update(data) -> undefined`
-You usually won't call this yourself.
-Instead, add the system to your world and call `world.update(data)` to update all of your systems.
+  removeSystem(system) {}
+
+  forEach(componentConstructors, fn) {}
+}
+```
+
+```javascript
+class Entity {
+  addComponent(component) {}
+
+  getComponent(componentConstructor) {}
+
+  removeComponent(componentConstructor) {}
+
+  // Removes self from world.
+  removeSelf(world) {}
+
+  // Returns true if and only if it has all the components specified.
+  hasAll(componentConstructors) {}
+}
+```
+
+```javascript
+class System {
+  // updateFn is a callback that takes two arguments:
+  //    0. data
+  //    1. world
+  constructor(updateFn) {}
+
+  // You usually won't call this yourself.
+  // It gets called internally by World.prototype.update().
+  update(data, world) {}
+}
+```
